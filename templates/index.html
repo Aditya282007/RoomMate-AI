@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomMate.AI - Smart Home Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🏠 RoomMate.AI</h1>
+            <p class="subtitle">Smart Home Gesture Control System</p>
+            <div class="connection-status" id="connectionStatus">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard">
+            <!-- Device Controls -->
+            <div class="card controls-card">
+                <h2>Device Controls</h2>
+                
+                <div class="device-control">
+                    <div class="device-info">
+                        <div class="device-icon">💡</div>
+                        <div>
+                            <h3>Light</h3>
+                            <p class="device-status" id="lightStatus">OFF</p>
+                        </div>
+                    </div>
+                    <div class="toggle-buttons">
+                        <button class="btn btn-on" onclick="controlDevice('light', 'on')">ON</button>
+                        <button class="btn btn-off" onclick="controlDevice('light', 'off')">OFF</button>
+                    </div>
+                </div>
+
+                <div class="device-control">
+                    <div class="device-info">
+                        <div class="device-icon">🌀</div>
+                        <div>
+                            <h3>Fan</h3>
+                            <p class="device-status" id="fanStatus">OFF</p>
+                        </div>
+                    </div>
+                    <div class="toggle-buttons">
+                        <button class="btn btn-on" onclick="controlDevice('fan', 'on')">ON</button>
+                        <button class="btn btn-off" onclick="controlDevice('fan', 'off')">OFF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sensors -->
+            <div class="card sensors-card">
+                <h2>Sensors</h2>
+                
+                <div class="sensor-item">
+                    <div class="sensor-icon">🔥</div>
+                    <div class="sensor-data">
+                        <h3>Gas Level</h3>
+                        <p class="sensor-value" id="gasValue">0</p>
+                        <div class="gas-bar">
+                            <div class="gas-fill" id="gasFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sensor-item">
+                    <div class="sensor-icon">👤</div>
+                    <div class="sensor-data">
+                        <h3>Motion Detection</h3>
+                        <p class="sensor-value" id="motionValue">No Motion</p>
+                    </div>
+                </div>
+
+                <div class="sensor-item">
+                    <div class="sensor-icon">🖐</div>
+                    <div class="sensor-data">
+                        <h3>Last Gesture</h3>
+                        <p class="sensor-value" id="gestureValue">None</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Webcam Gesture Control -->
+            <div class="card camera-card">
+                <h2>📷 Camera Gesture Control</h2>
+                <div class="camera-container">
+                    <video id="webcam" autoplay playsinline></video>
+                    <canvas id="canvas" style="display:none;"></canvas>
+                    <div class="camera-overlay" id="cameraOverlay">
+                        <p id="detectedGesture">No gesture detected</p>
+                    </div>
+                </div>
+                <div class="camera-controls">
+                    <button class="btn btn-camera" id="startCamera" onclick="startCamera()">Start Camera</button>
+                    <button class="btn btn-camera-stop" id="stopCamera" onclick="stopCamera()" style="display:none;">Stop Camera</button>
+                </div>
+                <p class="camera-info">Use your device's camera to control with gestures</p>
+            </div>
+
+            <!-- Gesture Guide -->
+            <div class="card gesture-card">
+                <h2>Gesture Controls</h2>
+                <div class="gesture-grid">
+                    <div class="gesture-item">
+                        <span class="gesture-emoji">👍</span>
+                        <p>Thumbs Up</p>
+                        <span class="gesture-action">Fan ON</span>
+                    </div>
+                    <div class="gesture-item">
+                        <span class="gesture-emoji">✌</span>
+                        <p>Victory</p>
+                        <span class="gesture-action">Light ON</span>
+                    </div>
+                    <div class="gesture-item">
+                        <span class="gesture-emoji">🖐</span>
+                        <p>Palm Open</p>
+                        <span class="gesture-action">Fan OFF</span>
+                    </div>
+                    <div class="gesture-item">
+                        <span class="gesture-emoji">✊</span>
+                        <p>Fist</p>
+                        <span class="gesture-action">Light OFF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Log -->
+            <div class="card log-card">
+                <h2>Event Log</h2>
+                <div class="log-container" id="logContainer">
+                    <p class="log-empty">No events yet...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
