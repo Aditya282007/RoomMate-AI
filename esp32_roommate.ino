@@ -1,7 +1,6 @@
 #include <WiFi.h>
 #include <WebServer.h>
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal.h>
 
 // ================== USER CONFIG ==================
 const char* WIFI_SSID     = "YOUR_WIFI_SSID";      // TODO: set your WiFi SSID
@@ -19,8 +18,16 @@ const int BUZZER_PIN      = 4;    // Active buzzer
 const int GAS_SENSOR_PIN  = 34;   // MQ gas sensor analog output (ADC1)
 const int PIR_PIN         = 27;   // PIR motion sensor digital output
 
-// I2C LCD (commonly 0x27 or 0x3F)
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+// LCD pins for parallel 1602 (4-bit mode)
+const int LCD_RS = 19;
+const int LCD_E  = 23;
+const int LCD_D4 = 18;
+const int LCD_D5 = 17;
+const int LCD_D6 = 16;
+const int LCD_D7 = 15;
+
+// Initialize parallel LCD: RS, E, D4, D5, D6, D7
+LiquidCrystal lcd(LCD_RS, LCD_E, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
 
 // Relay logic (many relay modules are active LOW)
 const int RELAY_ON  = LOW;
@@ -163,9 +170,8 @@ void setup() {
   updateRelays();
   digitalWrite(BUZZER_PIN, LOW);
 
-  Wire.begin(21, 22); // SDA, SCL for ESP32 DevKit v1
-  lcd.init();
-  lcd.backlight();
+  // Initialize parallel LCD (16 columns, 2 rows)
+  lcd.begin(16, 2);
   updateLCD("RoomMate ESP32", "Starting...");
 
   connectWiFi();
