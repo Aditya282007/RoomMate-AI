@@ -8,7 +8,7 @@ const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";  // TODO: set your WiFi passwo
 
 // Gas sensor threshold for local buzzer alarm (0-4095)
 // Python code currently uses ~300 as email threshold; calibrate as needed.
-const int GAS_ALERT_THRESHOLD = 300;
+const int GAS_ALERT_THRESHOLD = 2000;
 // =================================================
 
 // ========== PIN DEFINITIONS (ESP32 DevKit v1) ==========
