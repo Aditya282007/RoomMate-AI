@@ -148,7 +148,7 @@ Final year/
 │   └── index.html     # Web dashboard HTML
 └── static/
     ├── style.css      # Dashboard styling
-    └── script.js      # Frontend JavaScript
+    └── app.js         # Frontend JavaScript (status + hand gesture control)
 ```
 
 ## 🐛 Troubleshooting

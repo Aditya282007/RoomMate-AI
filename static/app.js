@@ -306,27 +306,34 @@ function detectGestureFromLandmarks(landmarks) {
     const ringMcp = landmarks[13].y;
     const pinkyTip = landmarks[20].y;
     const pinkyMcp = landmarks[17].y;
-    
-    // Thumbs up = Fan ON
-    if (thumbTip < thumbIp && indexTip > indexMcp && middleTip > middleMcp) {
-        return 'fan_on';
-    }
-    
-    // Victory = Light ON
-    else if (indexTip < indexMcp && middleTip < middleMcp && ringTip > ringMcp && pinkyTip > pinkyMcp) {
-        return 'light_on';
-    }
-    
-    // Palm = Fan OFF (all fingers up)
-    else if (indexTip < indexMcp && middleTip < middleMcp && ringTip < ringMcp && pinkyTip < pinkyMcp) {
-        return 'fan_off';
-    }
-    
-    // Fist = Light OFF
-    else if (indexTip > indexMcp && middleTip > middleMcp && ringTip > ringMcp && pinkyTip > pinkyMcp) {
+
+    // Convenience flags: finger up = tip above MCP (smaller y)
+    const thumbUp = thumbTip < thumbIp;
+    const indexUp = indexTip < indexMcp;
+    const middleUp = middleTip < middleMcp;
+    const ringUp = ringTip < ringMcp;
+    const pinkyUp = pinkyTip < pinkyMcp;
+
+    // ✊ Fist = Light OFF (all non-thumb fingers down)
+    if (!indexUp && !middleUp && !ringUp && !pinkyUp) {
         return 'light_off';
     }
-    
+
+    // 🖐 Palm = Fan OFF (all fingers up)
+    if (indexUp && middleUp && ringUp && pinkyUp) {
+        return 'fan_off';
+    }
+
+    // ✌ Victory = Light ON (index & middle up, ring & pinky down)
+    if (indexUp && middleUp && !ringUp && !pinkyUp) {
+        return 'light_on';
+    }
+
+    // 👍 Thumbs up = Fan ON (thumb up, index & middle down)
+    if (thumbUp && !indexUp && !middleUp) {
+        return 'fan_on';
+    }
+
     return null;
 }
 
